@@ -11,12 +11,10 @@
 </template>
 
 <script>
-    import { sendMessage } from 'utils/ws.js'
-
-
+    import { mapActions } from 'vuex'
 
     export default {
-        props: ['messages', 'messageAttr'],
+        props: ['messageAttr'],
     data() {
         return {
             text: '',
@@ -30,33 +28,21 @@
         }
     },
     methods: {
+        ...mapActions(['addMessageAction', 'updateMessageAction']),
         save() {
-            sendMessage({id: this.id, text: this.text})
-            this.text = ''
-            this.id = ''
-
-/*
-            const message = {text: this.text}
+            const message = {
+                id: this.id,
+                text: this.text
+            }
 
             if (this.id) {
-                this.$resource('/message{/id}').update({id: this.id}, message).then(result =>
-                    result.json().then(data => {
-                        const index = getIndex(this.messages, data.id)
-                        this.messages.splice(index, 1, data)
-                        this.text = ''
-                        this.id = ''
-                    })
-                )
+                this.updateMessageAction(message)
             } else {
-                this.$resource('/message{/id}').save({}, message).then(result =>
-                    result.json().then(data => {
-                        this.messages.push(data)
-                        this.text = ''
-                    })
-                )
+                this.addMessageAction(message)
             }
-            */
 
+            this.text = ''
+            this.id = ''
         }
     }
     }
