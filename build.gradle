@@ -27,12 +27,11 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 	compile('org.springframework.session:spring-session-jdbc')
     compile("org.springframework.boot:spring-boot-starter-websocket")
+	compile 'org.jsoup:jsoup:1.11.3'
     
 	compile('org.postgresql:postgresql')
 	compile('org.projectlombok:lombok')
 	compile('javax.xml.bind:jaxb-api')
-	//compile('com.sun.xml.bind:jaxb-core')
-	//compile('com.sun.xml.bind:jaxb-impl')
 	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

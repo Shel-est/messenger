@@ -1,7 +1,11 @@
 package com.example.messenger.controller;
 
 import com.example.messenger.domain.User;
+import com.example.messenger.domain.Views;
 import com.example.messenger.repository.MessageRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,23 +19,35 @@ import java.util.HashMap;
 @Controller
 @RequestMapping("/")
 public class MainController {
-    private final MessageRepository messageRepository;
+    private final MessageRepository messageRepo;
 
     @Value("${spring.profiles.active}")
     private String profile;
+    private final ObjectWriter writer;
 
     @Autowired
-    public MainController(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    public MainController(MessageRepository messageRepo, ObjectMapper mapper) {
+        this.messageRepo = messageRepo;
+
+        this.writer = mapper
+                .setConfig(mapper.getSerializationConfig())
+                .writerWithView(Views.FullMessage.class);
     }
 
     @GetMapping
-    public String main(Model model, @AuthenticationPrincipal User user) {
+    public String main(
+            Model model,
+            @AuthenticationPrincipal User user
+    ) throws JsonProcessingException {
         HashMap<Object, Object> data = new HashMap<>();
 
         if (user != null) {
             data.put("profile", user);
-            data.put("messages", messageRepository.findAll());
+
+            String messages = writer.writeValueAsString(messageRepo.findAll());
+            model.addAttribute("messages", messages);
+        } else {
+            model.addAttribute("messages", "[]");
         }
 
         model.addAttribute("frontendData", data);
