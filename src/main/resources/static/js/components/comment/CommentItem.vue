@@ -1,7 +1,7 @@
 <template>
     <v-list-tile>
         <v-list-tile-avatar>
-                <img :src="comment.author.userpic">
+            <img :src="comment.author.userpic">
         </v-list-tile-avatar>
 
         <v-list-tile-content>

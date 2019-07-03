@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-toolbar app>
-            <v-toolbar-title>Messenger</v-toolbar-title>
+            <v-toolbar-title>Sarafan</v-toolbar-title>
             <v-btn flat
                    v-if="profile"
                    :disabled="$route.path === '/'"
@@ -13,7 +13,7 @@
                    v-if="profile"
                    :disabled="$route.path === '/profile'"
                    @click="showProfile">
-                {{profile.name}}&nbsp;
+                {{profile.name}}
             </v-btn>
             <v-btn v-if="profile" icon href="/logout">
                 <v-icon>exit_to_app</v-icon>
@@ -27,14 +27,13 @@
 
 <script>
     import { mapState, mapMutations } from 'vuex'
-    import { addHandler } from 'utils/ws.js'
-
+    import { addHandler } from 'util/ws'
     export default {
         computed: mapState(['profile']),
         methods: {
             ...mapMutations([
-                'addMessageMutation', 
-                'updateMessageMutation', 
+                'addMessageMutation',
+                'updateMessageMutation',
                 'removeMessageMutation',
                 'addCommentMutation'
             ]),
@@ -43,13 +42,13 @@
             },
             showProfile() {
                 this.$router.push('/profile')
-            },
+            }
         },
         created() {
             addHandler(data => {
                 if (data.objectType === 'MESSAGE') {
                     switch (data.eventType) {
-                        case 'CREATE' :
+                        case 'CREATE':
                             this.addMessageMutation(data.body)
                             break
                         case 'UPDATE':
@@ -59,18 +58,18 @@
                             this.removeMessageMutation(data.body)
                             break
                         default:
-                            console.error('Event type is unknown "${data.eventType}"')
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
                     }
                 } else if (data.objectType === 'COMMENT') {
                     switch (data.eventType) {
-                        case 'CREATE' :
+                        case 'CREATE':
                             this.addCommentMutation(data.body)
                             break
                         default:
-                            console.error('Event type is unknown "${data.eventType}"')
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
                     }
                 } else {
-                    console.error('Object type is unknown "${data.objectType}"')
+                    console.error(`Looks like the object type if unknown "${data.objectType}"`)
                 }
             })
         },
@@ -78,12 +77,9 @@
             if (!this.profile) {
                 this.$router.replace('/auth')
             }
-        },
+        }
     }
 </script>
 
 <style>
-    .main-app {
-        color: maroon;
-    }
 </style>
