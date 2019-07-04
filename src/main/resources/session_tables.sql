@@ -7,7 +7,7 @@ CREATE TABLE spring_session (
   last_access_time      BIGINT   NOT NULL,
   max_inactive_interval INTEGER  NOT NULL,
   expiry_time           BIGINT   NOT NULL,
-  principal_name        VARCHAR(300) -- <= here was 100
+  principal_name        VARCHAR(500) -- <= here was 100
 );
 
 CREATE UNIQUE INDEX spring_session_ix1
