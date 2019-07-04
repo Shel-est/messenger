@@ -3,19 +3,19 @@ package com.example.messenger.domain;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
+@Table(name = "user_subscription")
 @Data
 @EqualsAndHashCode(of = "id")
 @ToString(of = "id")
-public class UserSubscription {
+@NoArgsConstructor
+public class UserSubscription implements Serializable {
     @EmbeddedId
     @JsonIgnore
     private UserSubscriptionId id;

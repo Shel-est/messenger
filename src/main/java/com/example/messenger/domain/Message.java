@@ -9,19 +9,20 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table
-@ToString(of = {"id", "text"})
-@EqualsAndHashCode(of = {"id"})
 @Data
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id", "text"})
 @JsonIdentityInfo(
         property = "id",
         generator = ObjectIdGenerators.PropertyGenerator.class
 )
-public class Message {
+public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Views.Id.class)

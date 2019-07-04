@@ -1,12 +1,15 @@
 package com.example.messenger.controller;
 
 import com.example.messenger.domain.User;
+import com.example.messenger.domain.UserSubscription;
 import com.example.messenger.domain.Views;
 import com.example.messenger.service.ProfileService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("profile")
@@ -35,5 +38,22 @@ public class ProfileController {
         } else {
             return profileService.changeSubscription(channel, subscriber);
         }
+    }
+
+    @GetMapping("get-subscriber{channelId}")
+    @JsonView(Views.IdName.class)
+    public List<UserSubscription> subscribers(
+            @PathVariable("channelId") User channel
+    ) {
+        return profileService.getSubscribers(channel);
+    }
+
+    @GetMapping("change-status{subscriberId}")
+    @JsonView(Views.IdName.class)
+    public UserSubscription changeSubscriptionStatus(
+            @AuthenticationPrincipal User channel,
+            @PathVariable("subscriberId") User subscriber
+    ) {
+        return profileService.changeSubscriptionStatus(channel, subscriber);
     }
 }

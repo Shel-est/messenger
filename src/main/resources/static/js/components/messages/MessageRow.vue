@@ -2,10 +2,9 @@
     <v-card class="my-2">
         <v-card-text primary-title>
             <user-link
-                :user="message.author"
-                size="48"
-            >
-            </user-link>
+                    :user="message.author"
+                    size="48"
+            ></user-link>
             <div class="pt-3">
                 {{ message.text }}
             </div>
@@ -29,10 +28,9 @@
     import Media from 'components/media/Media.vue'
     import CommentList from 'components/comment/CommentList.vue'
     import UserLink from 'components/UserLink.vue'
-
     export default {
         props: ['message', 'editMessage'],
-        components: { UserLink, CommentList, Media },
+        components: {UserLink, CommentList, Media },
         methods: {
             ...mapActions(['removeMessageAction']),
             edit() {

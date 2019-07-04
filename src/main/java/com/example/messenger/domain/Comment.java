@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
 @Data
 @EqualsAndHashCode(of = { "id" })
-public class Comment {
+public class Comment implements Serializable {
     @Id
     @GeneratedValue
     @JsonView(Views.IdName.class)

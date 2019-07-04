@@ -33,7 +33,7 @@
             editMessage(message) {
                 this.message = message
             }
-        }
+        },
     }
 </script>
 
