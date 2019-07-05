@@ -15,7 +15,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,14 +39,16 @@ public class MessageService {
     private final MessageRepository messageRepo;
     private final UserSubscriptionRepository userSubscriptionRepo;
     private final BiConsumer<EventType, Message> wsSender;
+
     @Autowired
-    public MessageService(MessageRepository messageRepo,
-                          UserSubscriptionRepository userSubscriptionRepo,
-                          WsSender wsSender
+    public MessageService(
+            MessageRepository messageRepo,
+            UserSubscriptionRepository userSubscriptionRepo,
+            WsSender wsSender
     ) {
         this.messageRepo = messageRepo;
         this.userSubscriptionRepo = userSubscriptionRepo;
-        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.IdName.class);
+        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.FullMessage.class);
     }
 
     private void fillMeta(Message message) throws IOException {
@@ -97,7 +98,7 @@ public class MessageService {
     }
 
     public Message update(Message messageFromDb, Message message) throws IOException {
-        BeanUtils.copyProperties(message, messageFromDb, "id");
+        messageFromDb.setText(message.getText());
         fillMeta(messageFromDb);
         Message updatedMessage = messageRepo.save(messageFromDb);
 
@@ -127,6 +128,7 @@ public class MessageService {
         channels.add(user);
 
         Page<Message> page = messageRepo.findByAuthorIn(channels, pageable);
+
         return new MessagePageDto(
                 page.getContent(),
                 pageable.getPageNumber(),

@@ -13,7 +13,7 @@
                     <v-btn
                             @click="changeSubscriptionStatus(item.subscriber.id)"
                     >
-                        {{item.active ? "Dismiss" : "Approve"}}
+                        {{item.isActive ? "Dismiss" : "Approve"}}
                     </v-btn>
                 </v-list-tile>
             </v-list>
@@ -43,7 +43,7 @@
                     ...this.subscriptions.slice(0, subscriptionIndex),
                     {
                         ...subscription,
-                        active: !subscription.active
+                        isActive: !subscription.isActive
                     },
                     ...this.subscriptions.slice(subscriptionIndex + 1)
                 ]

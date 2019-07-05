@@ -40,7 +40,7 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("get-subscriber{channelId}")
+    @GetMapping("get-subscribers/{channelId}")
     @JsonView(Views.IdName.class)
     public List<UserSubscription> subscribers(
             @PathVariable("channelId") User channel
@@ -48,7 +48,7 @@ public class ProfileController {
         return profileService.getSubscribers(channel);
     }
 
-    @GetMapping("change-status{subscriberId}")
+    @PostMapping("change-status/{subscriberId}")
     @JsonView(Views.IdName.class)
     public UserSubscription changeSubscriptionStatus(
             @AuthenticationPrincipal User channel,

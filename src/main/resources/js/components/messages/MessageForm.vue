@@ -14,12 +14,14 @@
 
 <script>
     import { mapActions } from 'vuex'
+    import * as Sentry from '@sentry/browser'
+
     export default {
         props: ['messageAttr'],
         data() {
             return {
                 text: '',
-                id: ''
+                id: null
             }
         },
         watch: {
@@ -41,7 +43,7 @@
                     this.addMessageAction(message)
                 }
                 this.text = ''
-                this.id = ''
+                this.id = null
             }
         }
     }

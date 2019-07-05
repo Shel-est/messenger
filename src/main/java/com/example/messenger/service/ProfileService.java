@@ -28,7 +28,8 @@ public class ProfileService {
         List<UserSubscription> subscriptions = channel.getSubscribers()
                 .stream()
                 .filter(subscription ->
-                        subscription.getSubscriber().equals(subscriber))
+                        subscription.getSubscriber().equals(subscriber)
+                )
                 .collect(Collectors.toList());
 
         if (subscriptions.isEmpty()) {
