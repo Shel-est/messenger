@@ -34,7 +34,11 @@ public class MainController {
     private final ObjectWriter profileWriter;
 
     @Autowired
-    public MainController(MessageService messageService, UserDetailsRepository userDetailsRepo, ObjectMapper mapper) {
+    public MainController(
+            MessageService messageService,
+            UserDetailsRepository userDetailsRepo,
+            ObjectMapper mapper
+        ) {
         this.messageService = messageService;
         this.userDetailsRepo = userDetailsRepo;
 
