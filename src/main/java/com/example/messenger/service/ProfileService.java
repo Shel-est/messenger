@@ -5,6 +5,7 @@ import com.example.messenger.domain.UserSubscription;
 import com.example.messenger.repository.UserDetailsRepository;
 import com.example.messenger.repository.UserSubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +52,9 @@ public class ProfileService {
         subscription.setActive(!subscription.isActive());
 
         return userSubscriptionRepo.save(subscription);
+    }
+
+    public List<User> getUserList() {
+        return userDetailsRepo.findAll(Sort.by(Sort.Direction.DESC, "name"));
     }
 }

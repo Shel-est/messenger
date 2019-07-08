@@ -1,5 +1,5 @@
 package com.example.messenger.dto;
 
 public enum ObjectType {
-    MESSAGE, COMMENT
+    MESSAGE, COMMENT, POST, PUBLIC
 }

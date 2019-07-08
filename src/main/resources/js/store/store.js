@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import messagesApi from 'api/messages'
 import commentApi from 'api/comment'
+import publicGroupApi from 'api/publicGroup'
 
 Vue.use(Vuex)
 
@@ -9,12 +10,19 @@ export default new Vuex.Store({
     state: {
         messages,
         profile,
+        publicGroups,
         ...frontendData
     },
     getters: {
         sortedMessages: state => (state.messages || []).sort((a, b) => -(a.id - b.id))
     },
     mutations: {
+        addPublicGroupMutation(state, publicGroup) {
+            state.publicGroups = [
+                ...state.publicGroups,
+                publicGroup
+            ]
+        },
         addMessageMutation(state, message) {
             state.messages = [
                 ...state.messages,
@@ -76,6 +84,12 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        async addPublicGroupAction({commit, state}, publicGroup) {
+            const result = await publicGroupApi.add(publicGroup)
+            const data = await result.json()
+
+            commit('addPublicGroupMutation', data)
+        },
         async addMessageAction({commit, state}, message) {
             const result = await messagesApi.add(message)
             const data = await result.json()

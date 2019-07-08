@@ -1,12 +1,24 @@
 <template>
     <v-app>
         <v-toolbar app>
-            <v-toolbar-title>Sarafan</v-toolbar-title>
+            <v-toolbar-title>Messenger</v-toolbar-title>
             <v-btn flat
                    v-if="profile"
                    :disabled="$route.path === '/'"
                    @click="showMessages">
                 Messages
+            </v-btn>
+            <v-btn flat
+                   v-if="profile"
+                   :disabled="$route.path === '/publicGroup'"
+                   @click="showPublic">
+                Public groups
+            </v-btn>
+            <v-btn flat
+                   v-if="profile"
+                   :disabled="$route.path === '/users'"
+                   @click="showUsers">
+                Users
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn flat
@@ -28,6 +40,7 @@
 <script>
     import { mapState, mapMutations } from 'vuex'
     import { addHandler } from 'util/ws'
+
     export default {
         computed: mapState(['profile']),
         methods: {
@@ -35,13 +48,20 @@
                 'addMessageMutation',
                 'updateMessageMutation',
                 'removeMessageMutation',
-                'addCommentMutation'
+                'addCommentMutation',
+                'addPublicGroupMutation'
             ]),
             showMessages() {
                 this.$router.push('/')
             },
             showProfile() {
                 this.$router.push('/user')
+            },
+            showPublic() {
+                this.$router.push('/publicGroup')
+            },
+            showUsers() {
+                this.$router.push('/users')
             }
         },
         created() {
@@ -64,6 +84,14 @@
                     switch (data.eventType) {
                         case 'CREATE':
                             this.addCommentMutation(data.body)
+                            break
+                        default:
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
+                    }
+                } else if (data.objectType === 'PUBLIC') {
+                    switch (data.eventType) {
+                        case 'CREATE':
+                            this.addPublicGroupMutation(data.body)
                             break
                         default:
                             console.error(`Looks like the event type if unknown "${data.eventType}"`)

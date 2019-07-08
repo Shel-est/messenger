@@ -9,6 +9,9 @@ public final class Views {
 
     public interface FullMessage extends IdName {}
 
-    public interface FullProfile extends IdName {
-    }
+    public interface FullPost extends IdName {}
+
+    public interface FullProfile extends IdName {}
+
+    public interface FullPublic extends IdName {}
 }

@@ -42,12 +42,16 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     import profileApi from 'api/profile'
+
     export default {
         name: 'Profile',
         data() {
             return {
-                profile: {}
+                profile: {},
+                name: '',
+                id: null
             }
         },
         computed: {
@@ -68,6 +72,7 @@
             }
         },
         methods: {
+            ...mapActions(['addPublicGroupAction']),
             async changeSubscription() {
                 const data = await profileApi.changeSubscription(this.profile.id)
                 this.profile = await data.json()
@@ -77,6 +82,13 @@
                 const data = await profileApi.get(id)
                 this.profile = await data.json()
                 this.$forceUpdate()
+            },
+            createPublicGroup() {
+                const publicGroup = {
+                    id: this.id,
+                    name: this.name
+                }
+                this.addPublicGroupAction(publicGroup)
             }
         },
         beforeMount() {

@@ -3,6 +3,7 @@ package com.example.messenger.controller;
 import com.example.messenger.domain.User;
 import com.example.messenger.domain.Views;
 import com.example.messenger.dto.MessagePageDto;
+import com.example.messenger.repository.PublicRepository;
 import com.example.messenger.repository.UserDetailsRepository;
 import com.example.messenger.service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,20 +28,23 @@ import static com.example.messenger.controller.MessageController.MESSAGES_PER_PA
 public class MainController {
     private final MessageService messageService;
     private final UserDetailsRepository userDetailsRepo;
+    private final PublicRepository publicRepo;
 
     @Value("${spring.profiles.active:prod}")
     private String profile;
     private final ObjectWriter messageWriter;
     private final ObjectWriter profileWriter;
+    private final ObjectWriter publicGroupsWriter;
 
     @Autowired
     public MainController(
             MessageService messageService,
             UserDetailsRepository userDetailsRepo,
-            ObjectMapper mapper
-        ) {
+            ObjectMapper mapper,
+            PublicRepository publicRepo) {
         this.messageService = messageService;
         this.userDetailsRepo = userDetailsRepo;
+        this.publicRepo = publicRepo;
 
         this.messageWriter = mapper
                 .setConfig(mapper.getSerializationConfig())
@@ -49,6 +53,9 @@ public class MainController {
         this.profileWriter = mapper
                 .setConfig(mapper.getSerializationConfig())
                 .writerWithView(Views.FullProfile.class);
+        this.publicGroupsWriter = mapper
+                .setConfig(mapper.getSerializationConfig())
+                .writerWithView(Views.FullPublic.class);
     }
 
     @GetMapping
@@ -69,12 +76,16 @@ public class MainController {
 
             String messages = messageWriter.writeValueAsString(messagePageDto.getMessages());
 
+            String publicGroups = publicGroupsWriter.writeValueAsString(publicRepo.findAll());
+
             model.addAttribute("messages", messages);
+            model.addAttribute("publicGroups", publicGroups);
             data.put("currentPage", messagePageDto.getCurrentPage());
             data.put("totalPages", messagePageDto.getTotalPages());
         } else {
             model.addAttribute("messages", "[]");
             model.addAttribute("profile", "null");
+            model.addAttribute("publicGroups", "[]");
         }
 
         model.addAttribute("frontendData", data);

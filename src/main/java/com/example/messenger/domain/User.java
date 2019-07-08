@@ -18,7 +18,7 @@ import java.util.Set;
 @ToString(of = { "id", "name" })
 public class User implements Serializable {
     @Id
-    @JsonView(Views.IdName.class)
+    @JsonView(Views.Id.class)
     private String id;
     @JsonView(Views.IdName.class)
     private String name;
