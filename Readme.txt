@@ -1,4 +1,6 @@
-Spring boot + vue.js проект для портфолио.
+Социальная сеть реализованная с помощью spring boot + vue.js проект для портфолио.
 
-Релизная версия залита на heroku:
+Регистрация OAuth2 через google аккаунт.
+
+Демонстрационная версия залита на heroku:
 https://portfolio-messenger.herokuapp.com/
